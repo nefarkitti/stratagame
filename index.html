@@ -38,7 +38,7 @@
         }
 
         i {
-            font-size: 50px;
+            font-size: 40px;
             margin: 10px;
         }
 
@@ -207,7 +207,7 @@
                 let arrow = document.createElement("i")
                 arrow.id = `arrow-${i}`
                 arrow.classList.add("fa-solid")
-                arrow.classList.add(`fa-caret-${direction}`)
+                arrow.classList.add(`fa-${direction}-long`)
                 arrow.classList.add("arrow")
                 arrow.style.animationDelay = `${0.03 * (1 + i)}s`
 
