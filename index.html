@@ -17,6 +17,7 @@
         body {
             background-color: #2b2b2b;
             color: #ffe80a;
+            user-select: none;
         }
 
         main {
@@ -113,6 +114,14 @@
         .right {
             transform: rotate(-90deg);
         }
+        #stratagem-image {
+            background-color: #252525;
+        }
+        .info {
+            padding: 5px 20px;
+            background-color: #252525;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -120,30 +129,228 @@
     <main>
         <h2>Helldivers 2</h2>
         <h1>STRATAGEMS</h1>
+        <img id="stratagem-image" src="stratagems/png" alt="" height="100">
         <div id="strata-container" class="strata-container">
             <i class="fa-solid fa-arrow-up arrow"></i>
             <i class="fa-solid fa-arrow-left arrow highlight"></i>
         </div>
-        <input type="range" name="difficulty" id="difficulty-slider" min="1" max="10">
-        <span id="difficulty-level">difficulty level: 0</span>
-        <br>
-        <div id="time-container">
-            <span>5ms</span>
-            <span>5ms</span>
+        <!--<input type="range" name="difficulty" id="difficulty-slider" min="1" max="10">-->
+        <span id="stratagem-name"></span>
+        <div class="info">
+            <div id="time-container">
+            </div>
+            <span id="ratio"></span><br>
+            <span id="timetaken"></span><br>
+            <h3 id="inspirational-quote"></h3>
         </div>
-        <span id="ratio">accuracy: 100%</span>
-        <span id="timetaken">1s</span>
     </main>
     <script>
 
+        const stratagems = [
+            //SUPPORT BACKPACKS
+            {
+                name: "LIFT-850 Jump Pack",
+                inputs: ["down", "up", "up", "down", "up"]
+            },
+            {
+                name: "B-1 Supply Pack",
+                inputs: ["down", "left", "down", "up", "up", "down"]
+            },
+            {
+                name: `AX_LAS-5 Guard Dog Rover`,
+                inputs: ["down", "up", "left", "up", "right", "right"]
+            },
+            {
+                name: `SH-20 Ballistic Shield Backpack`,
+                inputs: ["down", "left", "down", "down", "up", "left"]
+            },
+            {
+                name: `SH-32 Shield Generator Pack`,
+                inputs: ["down", "up", "left", "right", "left", "right"]
+            },
+            {
+                name: `AX_AR-23 Guard Dog`,
+                inputs: ["down", "up", "left", "up", "right", "down"]
+            },
+            //SUPPORT WEAPONS
+            {
+                name: `MG-43 Machine Gun`,
+                inputs: ["down", "left", "down", "up", "right"]
+            },
+            {
+                name: `APW-1 Anti-Materiel Rifle`,
+                inputs: ["down", "left", "right", "up", "down"]
+            },
+            {
+                name: `M-105 Stalwart`,
+                inputs: ["down", "left", "down", "up", "up", "left"]
+            },
+            {
+                name: `EAT-17 Expendable Anti-tank`,
+                inputs: ["down", "down", "left", "up", "right"]
+            },
+            {
+                name: `GR-8 Recoilless Rifle`,
+                inputs: ["down", "left", "right", "right", "left"]
+            },
+            {
+                name: `FLAM-40 Flamethrower`,
+                inputs: ["down", "left", "up", "down", "up"]
+            },
+            {
+                name: `AC-8 Autocannon`,
+                inputs: ["down", "left", "down", "up", "up", "right"]
+            },
+            {
+                name: `RS-422 Railgun`,
+                inputs: ["down","right","down","up","left","right"]
+            },
+            {
+                name: `FAF-14 SPEAR`,
+                inputs: ["down","down","up","down","down"]
+            },
+            {
+                name: `GL-21 Grenade Launcher`,
+                inputs: ["down","left","up","left","down"]
+            },
+            {
+                name: `LAS-98 Laser Cannon`,
+                inputs: ["down", "left", "down", "up", "left"]
+            },
+            {
+                name: `ARC-3 Arc Thrower`,
+                inputs: ["down", "right", "down","up","left","left"]
+            },
+            /*DEFENSIVE STRATAGEMS*/
+            {
+                name: `E_MG-101 HMG Emplacement`,
+                inputs: ["down", "up", "left", "right", "right", "left"]
+            },
+            {
+                name: `FX-12 Shield Generator Relay`,
+                inputs: ["down","down","left","right","left","right"]
+            },
+            {
+                name: `A_ARC-3 Tesla Tower`,
+                inputs: ["down","up","right","up","left","right"]
+            },
+            {
+                name: `MD-6 Anti-Personnel Minefield`,
+                inputs: ["down","left","up","right"]
+            },
+            {
+                name: `MD-I4 Incendiary Mines`,
+                inputs: ["down","left","left","down"]
+            },
+            {
+                name: `A_MG-43 Machine Gun Sentry`,
+                inputs: ["down","up","right","right","up"]
+            },
+            {
+                name: `A_G-16 Gatling Sentry`,
+                inputs: ["down","up","right","left"]
+            },
+            {
+                name: `A_M-12 Mortar Sentry`,
+                inputs: ["down","up","right","right","down"]
+            },
+            {
+                name: `A_AC-8 Autocannon Sentry`,
+                inputs: ["down","up","right","up","left","up"]
+            },
+            {
+                name: `A_MLS-4X Rocket Sentry`,
+                inputs: ["down","up","right","right","left"]
+            },
+            {
+                name: `A_M-23 EMS Mortar Sentry`,
+                inputs: ["down","up","right","down","right"]
+            },
+            /*ORBITAL STRATAGEMS*/
+            {
+                name: `Orbital Gatling Barrage`,
+                inputs: ["right", "down", "left", "up", "up"]
+            },
+            {
+                name: `Orbital Airburst Strike`,
+                inputs: ["right", "right", "right"]
+            },
+            {
+                name: `Orbital 120MM HE Barrage`,
+                inputs: ["right", "right", "down", "left", "right", "down"]
+            },
+            {
+                name: `Orbital 380MM HE Barrage`,
+                inputs: ["right", "down", "up", "up", "left", "down", "down"]
+            },
+            {
+                name: `Orbital Walking Barrage`,
+                inputs: ["right", "down", "right", "down", "right", "down"]
+            },
+            {
+                name: `Orbital Laser`,
+                inputs: ["right", "down", "up", "right", "down"]
+            },
+            {
+                name: `Orbital Railcannon Strike`,
+                inputs: ["right", "up", "down", "down", "right"]
+            },
+            {
+                name: `Orbital Precision Strike`,
+                inputs: ["right", "right", "up"]
+            },
+            {
+                name: `Orbital Gas Strike`,
+                inputs: ["right", "right", "down", "right"]
+            },
+            {
+                name: `Orbital EMS`,
+                inputs: ["right", "right", "left", "down"]
+            },
+            {
+                name: `Orbital Smoke Strike`,
+                inputs: ["right", "right", "down", "up"]
+            },
+            /*EAGLE STRATAGEMS*/
+            {
+                name: `Eagle Strafing Run`,
+                inputs: ["up", "right", "right"]
+            },
+            {
+                name: `Eagle Airstrike`,
+                inputs: ["up", "right", "down", "right"]
+            },
+            {
+                name: `Eagle Cluster Bomb`,
+                inputs: ["up", "right", "down", "down", "right"]
+            },
+            {
+                name: `Eagle Napalm Airstrike`,
+                inputs: ["up", "right", "down", "up"]
+            },
+            {
+                name: `Eagle Smoke Strike`,
+                inputs: ["up", "right", "up", "down"]
+            },
+            {
+                name: `Eagle 110MM Rocket Pods`,
+                inputs: ["up", "right", "right"]
+            },
+            {
+                name: `Eagle 500KG Bomb`,
+                inputs: ["up", "right", "down", "down", "down"]
+            },
+        ]
+
+        const image = document.getElementById("stratagem-image")
         const container = document.getElementById("strata-container")
-        const slider = document.getElementById("difficulty-slider")
-        const level = document.getElementById("difficulty-level")
         const ratio = document.getElementById("ratio")
         const timeContainer = document.getElementById("time-container")
         const timeTaken = document.getElementById("timetaken")
+        const strataName = document.getElementById("stratagem-name")
+        const quote = document.getElementById("inspirational-quote")
 
-        slider.value = 1
+        quote.innerHTML = ``
 
         let currentStratagem = []
         let time = []
@@ -162,9 +369,10 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+        let percentage = 0
         function updateRatio() {
             //fail
-            let percentage = (hits / total) * 100
+            percentage = (hits / total) * 100
             ratio.innerHTML = `accuracy: ${percentage}%`
             if (isNaN(percentage)) {
                 ratio.innerHTML = `accuracy: 100%`
@@ -190,17 +398,12 @@
         let startTime
         let endTime
 
-        function loadArrows(diff) {
-            let multi = 0
-            if (diff) {
-                multi = diff
-            }
-            let arrowAmount = getRandomInt(3, 7) + (Number(multi)-1)
-
+        function loadArrows() {
             complete = false
 
             container.innerHTML = ``
             timeTaken.innerHTML = ``
+            quote.innerHTML = ``
             currentIndex = 0
             hits = 0
             total = 0
@@ -211,9 +414,13 @@
 
             startTime = new Date().getTime()
 
-            for (let i = 0; i < arrowAmount; i++) {
+            let randomStratagem = stratagems[getRandomInt(0, stratagems.length-1)]
+            console.log(randomStratagem)
 
-                let direction = directions[getRandomInt(0, directions.length - 1)]
+            for (let i = 0; i < randomStratagem.inputs.length; i++) {
+
+                let direction = randomStratagem.inputs[i]
+                console.log(direction)
 
                 let arrow = document.createElement("img")
                 arrow.id = `arrow-${i}`
@@ -225,15 +432,13 @@
 
                 container.appendChild(arrow)
                 currentStratagem.push(direction)
+
+                image.src = `stratagems/${randomStratagem.name}.png`
+                strataName.innerText = randomStratagem.name
+
             }
             firstTime = new Date().getTime()
         }
-        level.innerHTML = `difficulty level: ${slider.value}`
-
-        slider.addEventListener('input', function () {
-            level.innerHTML = `difficulty level: ${slider.value}`
-            loadArrows(slider.value)
-        })
 
         complete = true
         container.innerHTML = `press wasd/arrow keys to begin`
@@ -273,12 +478,45 @@
                     complete = true
                     endTime = new Date().getTime()
                     timeTaken.innerHTML = `completed in ${(endTime-startTime)/1000}s`
+                    
+                    let ranking = "Cadet"
+                    if (percentage >= 10) {
+                        ranking = "Space Cadet"
+                    }
+                    if (percentage >= 20) {
+                        ranking = "Sergeant"
+                    }
+                    if (percentage >= 30) {
+                        ranking = "Master Sergeant"
+                    }
+                    if (percentage >= 40) {
+                        ranking = "Chief"
+                    }
+                    if (percentage >= 50) {
+                        ranking = "Space Chief Prime"
+                    }
+                    if (percentage >= 60) {
+                        ranking = "Death Captain"
+                    }
+                    if (percentage >= 70) {
+                        ranking = "Marshal"
+                    }
+                    if (percentage >= 80) {
+                        ranking = "Star Marshal"
+                    }
+                    if (percentage >= 90) [
+                        ranking = "Admiral"
+                    ]
+                    if (percentage >= 95) {
+                        ranking = "Skull Admiral"
+                    }
+                    quote.innerText = ranking
                 }
             } else {
                 if (directions.includes(input)) {
                     if (complete == true) {
                         complete == false
-                        loadArrows(slider.value)
+                        loadArrows()
                         return;
                     }
                     misses += 1
