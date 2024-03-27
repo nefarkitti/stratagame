@@ -25,7 +25,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            height: 100%;
+            height: 75%;
             width: 100%;
         }
 
@@ -138,6 +138,7 @@
             height: 300px;
             text-align: center;
             overflow: scroll;
+            overflow-x: hidden;
             padding: 5px;
             border-radius: 2px;
         }
@@ -164,11 +165,11 @@
     </style>
 </head>
 
-<body>
+<body style="text-align: center;margin-top: 40px;">
+    <img src="logo.png" alt="" height="100" style="margin-bottom: 10px;">
+    <h1>STRATAGEMS</h1>
     <main>
         <div style="text-align: center;">
-            <img src="logo.png" alt="" height="100" style="margin-bottom: 10px;">
-            <h1>STRATAGEMS</h1>
             <img id="stratagem-image" src="stratagems/png" alt="" height="100">
             <div id="strata-container" class="strata-container">
                 <i class="fa-solid fa-arrow-up arrow"></i>
@@ -404,6 +405,34 @@
                 name: `SOS Beacon`,
                 inputs: ["up","down","left","up"]
             },
+            {
+                name: `Resupply`,
+                inputs: ["down", "down", "up", "right"]
+            },
+            {
+                name: `SSSD Delivery`,
+                inputs: ["down", "down", "down", "up", "up"]
+            },
+            {
+                name: `Seismic Probe`,
+                inputs: ["up", "up", "left", "right", "down", "down"]
+            },
+            {
+                name: `Upload Data`,
+                inputs: ["down", "down", "up", "up", "up"]
+            },
+            {
+                name: `Eagle Rearm`,
+                inputs: ["up", "up", "left", "up", "right"]
+            },
+            {
+                name: `SEAF Artillery`,
+                inputs: ["right", "up", "up", "down"]
+            },
+            {
+                name: `Super Earth Flag`,
+                inputs: ["down", "up", "down", "up"]
+            }
         ]
 
         const image = document.getElementById("stratagem-image")
@@ -458,6 +487,10 @@
 
             timeContainer.innerHTML = `avg time between inputs: ${(sum / time.length) / 1000}s`
         }
+
+        ratio.innerHTML = ``
+        timeContainer.innerHTML = ``
+
         topStratagems.innerHTML = ``
         function updateBest() {
             topStratagems.innerHTML = ``
@@ -535,6 +568,8 @@
             time = []
             updateTime()
             updateRatio()
+            ratio.innerHTML = ``
+            timeContainer.innerHTML = ``
 
             let randomStratagem = stratagems[getRandomInt(0, stratagems.length - 1)]
             console.log(randomStratagem)
@@ -558,7 +593,7 @@
                 currentStratagem.push(direction)
 
                 image.src = `stratagems/${randomStratagem.name}.png`
-                strataName.innerText = randomStratagem.name
+                strataName.innerHTML = `<b>${randomStratagem.name.toUpperCase()}</b>`
 
             }
             firstTime = new Date().getTime()
@@ -599,14 +634,15 @@
                 secondTime = new Date().getTime()
                 time.push(secondTime - firstTime)
                 firstTime = new Date().getTime()
-                updateTime()
                 hits++
-                updateRatio()
                 if (currentIndex == currentStratagem.length) {
                     success += 1
                     complete = true
                     endTime = new Date().getTime()
                     timeTaken.innerHTML = `completed in ${(endTime - startTime) / 1000}s`
+
+                    updateRatio()
+                    updateTime()
 
                     let ranking = "Cadet"
                     if (percentage >= 10) {
@@ -667,11 +703,20 @@
                     if (complete == true) {
                         complete == false
                         firstInput = true
+                        updateRatio()
                         loadArrows()
                         return;
+                    } else {
+                        currentIndex = 0
+                        for (let i = 0; i < chosen.inputs.length-1;i++) {
+                            const arrow = document.getElementById(`arrow-${i}`)
+                            arrow.src = "arrows/arrow.png"
+                        }
+
+                        misses += 1
                     }
-                    misses += 1
-                    updateRatio()
+
+                    // messed up big time
                 } else {
                     return;
                 }
