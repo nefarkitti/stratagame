@@ -11,7 +11,7 @@
         * {
             font-family: "Chakra Petch", sans-serif;
             transition: 0.2s;
-            image-rendering:optimizeQuality;
+            image-rendering: optimizeQuality;
         }
 
         body {
@@ -22,7 +22,7 @@
 
         main {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             height: 100%;
@@ -101,6 +101,7 @@
             font-size: 20px;
             vertical-align: middle;
         }
+
         .strata-container {
             margin-bottom: 10px;
         }
@@ -108,40 +109,90 @@
         .up {
             transform: rotate(180deg) !important;
         }
+
         .left {
             transform: rotate(90deg);
         }
+
         .right {
             transform: rotate(-90deg);
         }
+
         #stratagem-image {
             background-color: #252525;
+            border-radius: 2px;
         }
+
         .info {
             padding: 5px 20px;
             background-color: #252525;
             margin-top: 5px;
+            border-radius: 2px;
+        }
+
+        .board {
+            margin: 5px;
+            margin-left: 50px;
+            background-color: #252525;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            overflow: scroll;
+            padding: 5px;
+            border-radius: 2px;
+        }
+        table {
+            border-spacing: inherit;
+        }
+        td img {
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        td {
+            width: 100%;
+            padding: 0;
+        }
+        td img.arrow {
+            height: 15px;
+        }
+        .topStrata {
+            font-style: italic;
+            background-color: #2b2b2b;
+            font-weight: 800;
         }
     </style>
 </head>
 
 <body>
     <main>
-        <img src="logo.png" alt="" height="100" style="margin-bottom: 10px;">
-        <h1>STRATAGEMS</h1>
-        <img id="stratagem-image" src="stratagems/png" alt="" height="100">
-        <div id="strata-container" class="strata-container">
-            <i class="fa-solid fa-arrow-up arrow"></i>
-            <i class="fa-solid fa-arrow-left arrow highlight"></i>
-        </div>
-        <!--<input type="range" name="difficulty" id="difficulty-slider" min="1" max="10">-->
-        <span id="stratagem-name"></span>
-        <div class="info">
-            <div id="time-container">
+        <div style="text-align: center;">
+            <img src="logo.png" alt="" height="100" style="margin-bottom: 10px;">
+            <h1>STRATAGEMS</h1>
+            <img id="stratagem-image" src="stratagems/png" alt="" height="100">
+            <div id="strata-container" class="strata-container">
+                <i class="fa-solid fa-arrow-up arrow"></i>
+                <i class="fa-solid fa-arrow-left arrow highlight"></i>
             </div>
-            <span id="ratio"></span><br>
-            <span id="timetaken"></span><br>
-            <h3 id="inspirational-quote"></h3>
+            <!--<input type="range" name="difficulty" id="difficulty-slider" min="1" max="10">-->
+            <span id="stratagem-name"></span>
+            <div class="info">
+                <div id="time-container">
+                </div>
+                <span id="ratio"></span><br>
+                <span id="timetaken"></span><br>
+                <h3 id="inspirational-quote"></h3>
+                <p style="filter: opacity(50%);font-style: italic;font-size: 10px;">the timer only starts once you start inputting the stratagem</p>
+            </div>
+        </div>
+        <div class="board">
+            <h2>fastest stratagems</h2>
+            <table id="stratagem-top">
+                <tr>
+                    <td><img src="stratagems/A_ARC-3 Tesla Tower.png" alt="">A_ARC-3 Tesla Tower</td>
+                    <td>25s</td>
+                </tr>
+            </table>
         </div>
     </main>
     <script>
@@ -203,15 +254,15 @@
             },
             {
                 name: `RS-422 Railgun`,
-                inputs: ["down","right","down","up","left","right"]
+                inputs: ["down", "right", "down", "up", "left", "right"]
             },
             {
                 name: `FAF-14 SPEAR`,
-                inputs: ["down","down","up","down","down"]
+                inputs: ["down", "down", "up", "down", "down"]
             },
             {
                 name: `GL-21 Grenade Launcher`,
-                inputs: ["down","left","up","left","down"]
+                inputs: ["down", "left", "up", "left", "down"]
             },
             {
                 name: `LAS-98 Laser Cannon`,
@@ -219,7 +270,7 @@
             },
             {
                 name: `ARC-3 Arc Thrower`,
-                inputs: ["down", "right", "down","up","left","left"]
+                inputs: ["down", "right", "down", "up", "left", "left"]
             },
             /*DEFENSIVE STRATAGEMS*/
             {
@@ -228,43 +279,43 @@
             },
             {
                 name: `FX-12 Shield Generator Relay`,
-                inputs: ["down","down","left","right","left","right"]
+                inputs: ["down", "down", "left", "right", "left", "right"]
             },
             {
                 name: `A_ARC-3 Tesla Tower`,
-                inputs: ["down","up","right","up","left","right"]
+                inputs: ["down", "up", "right", "up", "left", "right"]
             },
             {
                 name: `MD-6 Anti-Personnel Minefield`,
-                inputs: ["down","left","up","right"]
+                inputs: ["down", "left", "up", "right"]
             },
             {
                 name: `MD-I4 Incendiary Mines`,
-                inputs: ["down","left","left","down"]
+                inputs: ["down", "left", "left", "down"]
             },
             {
                 name: `A_MG-43 Machine Gun Sentry`,
-                inputs: ["down","up","right","right","up"]
+                inputs: ["down", "up", "right", "right", "up"]
             },
             {
                 name: `A_G-16 Gatling Sentry`,
-                inputs: ["down","up","right","left"]
+                inputs: ["down", "up", "right", "left"]
             },
             {
                 name: `A_M-12 Mortar Sentry`,
-                inputs: ["down","up","right","right","down"]
+                inputs: ["down", "up", "right", "right", "down"]
             },
             {
                 name: `A_AC-8 Autocannon Sentry`,
-                inputs: ["down","up","right","up","left","up"]
+                inputs: ["down", "up", "right", "up", "left", "up"]
             },
             {
                 name: `A_MLS-4X Rocket Sentry`,
-                inputs: ["down","up","right","right","left"]
+                inputs: ["down", "up", "right", "right", "left"]
             },
             {
                 name: `A_M-23 EMS Mortar Sentry`,
-                inputs: ["down","up","right","down","right"]
+                inputs: ["down", "up", "right", "down", "right"]
             },
             /*ORBITAL STRATAGEMS*/
             {
@@ -304,7 +355,7 @@
                 inputs: ["right", "right", "down", "right"]
             },
             {
-                name: `Orbital EMS`,
+                name: `Orbital EMS Strike`,
                 inputs: ["right", "right", "left", "down"]
             },
             {
@@ -334,11 +385,24 @@
             },
             {
                 name: `Eagle 110MM Rocket Pods`,
-                inputs: ["up", "right", "right"]
+                inputs: ["up", "right", "up", "left"]
             },
             {
                 name: `Eagle 500KG Bomb`,
                 inputs: ["up", "right", "down", "down", "down"]
+            },
+            /*MISSION*/
+            {
+                name: `NUX-223 Hellbomb`,
+                inputs: ["down", "up", "left", "down", "up", "right", "down", "up"]
+            },
+            {
+                name: `Reinforce`,
+                inputs: ["up", "down", "right", "left", "up"]
+            },
+            {
+                name: `SOS Beacon`,
+                inputs: ["up","down","left","up"]
             },
         ]
 
@@ -349,12 +413,17 @@
         const timeTaken = document.getElementById("timetaken")
         const strataName = document.getElementById("stratagem-name")
         const quote = document.getElementById("inspirational-quote")
+        const topStratagems = document.getElementById("stratagem-top")
 
         quote.innerHTML = ``
 
         let currentStratagem = []
+        let chosen = {}
         let time = []
+        let bestTimes = []
         let currentIndex = 0
+
+        let firstInput = false
 
         let success = 0
         let fail = 0
@@ -389,6 +458,60 @@
 
             timeContainer.innerHTML = `avg time between inputs: ${(sum / time.length) / 1000}s`
         }
+        topStratagems.innerHTML = ``
+        function updateBest() {
+            topStratagems.innerHTML = ``
+            function compare(a, b) {
+                return a.time - b.time;
+            }
+            bestTimes.sort(compare)
+
+            let number = 0
+            bestTimes.forEach(element => {
+                number ++
+                /*
+                <td><img src="stratagems/A_ARC-3 Tesla Tower.png" alt="">A_ARC-3 Tesla Tower</td>
+                <td>25s</td>
+                */
+
+                let stratagem = null
+                stratagems.forEach(strata => {
+                    if (strata.name == element.name) {
+                        stratagem = strata
+                        return;
+                    }
+                })
+
+
+                const code = document.createElement("span")
+                for (let i = 0; i < stratagem.inputs.length; i++) {
+                    let direction = stratagem.inputs[i]
+                    let arrow = document.createElement("img")
+                    arrow.id = `arrow-${i}`
+                    arrow.classList.add(`${direction}`)
+                    arrow.classList.add('arrow')
+                    arrow.src = "arrows/arrow-highlight.png"
+                    arrow.style.animation = "none"
+                    arrow.style.filter = "opacity(100%)"
+                    code.appendChild(arrow)
+                }
+
+                const tr = document.createElement("tr")
+                const td = document.createElement("td")
+                td.innerHTML = `<img src="stratagems/${element.name}.png" alt="">${element.name}<br><span>${code.innerHTML}</span>`
+                tr.appendChild(td)
+                const td2 = document.createElement("td")
+                td2.innerHTML = `${element.time}s`
+                tr.appendChild(td2)
+
+                if (number == 1) {
+                    tr.classList.add("topStrata")
+                }
+
+                topStratagems.appendChild(tr)
+
+            })
+        }
 
         let directions = ["up", "down", "left", "right"]
 
@@ -408,17 +531,17 @@
             hits = 0
             total = 0
             currentStratagem = []
+            chosen = {}
             time = []
             updateTime()
             updateRatio()
 
-            startTime = new Date().getTime()
-
-            let randomStratagem = stratagems[getRandomInt(0, stratagems.length-1)]
+            let randomStratagem = stratagems[getRandomInt(0, stratagems.length - 1)]
             console.log(randomStratagem)
 
             for (let i = 0; i < randomStratagem.inputs.length; i++) {
 
+                chosen = randomStratagem
                 let direction = randomStratagem.inputs[i]
                 console.log(direction)
 
@@ -427,6 +550,7 @@
                 arrow.classList.add(`${direction}`)
 
                 arrow.src = "arrows/arrow.png"
+                arrow.classList.add('arrow')
 
                 arrow.style.animationDelay = `${0.03 * (1 + i)}s`
 
@@ -444,6 +568,7 @@
         container.innerHTML = `press wasd/arrow keys to begin`
         updateRatio()
         updateTime()
+        firstInput = true
 
         window.addEventListener('keydown', function (e) {
             let input = ""
@@ -462,6 +587,10 @@
             console.log(input)
             if (input != "") {
                 total++
+                if (firstInput == true) {
+                    firstInput = false
+                    startTime = new Date().getTime()
+                }
             }
             if (currentStratagem[currentIndex] == input) {
                 let arrow = document.getElementById(`arrow-${currentIndex}`)
@@ -477,8 +606,8 @@
                     success += 1
                     complete = true
                     endTime = new Date().getTime()
-                    timeTaken.innerHTML = `completed in ${(endTime-startTime)/1000}s`
-                    
+                    timeTaken.innerHTML = `completed in ${(endTime - startTime) / 1000}s`
+
                     let ranking = "Cadet"
                     if (percentage >= 10) {
                         ranking = "Space Cadet"
@@ -511,11 +640,33 @@
                         ranking = "Skull Admiral"
                     }
                     quote.innerText = ranking
+
+                    let pass = false
+                    for (let i = 0; i < bestTimes.length - 1; i++) {
+                        if (bestTimes[i].name == chosen.name) {
+                            pass = true
+                            let newtime = (endTime - startTime) / 1000
+                            console.log("TIMES")
+                            console.log(newtime)
+                            console.log(bestTimes[i].time)
+                            if (newtime < bestTimes[i].time) {
+                                bestTimes[i].time = newtime
+                            }
+                        }
+                    }
+                    if (pass == false) {
+                        bestTimes.push({
+                            name: chosen.name,
+                            time: (endTime - startTime) / 1000
+                        })
+                    }
+                    updateBest()
                 }
             } else {
                 if (directions.includes(input)) {
                     if (complete == true) {
                         complete == false
+                        firstInput = true
                         loadArrows()
                         return;
                     }
