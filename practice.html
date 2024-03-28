@@ -22,7 +22,7 @@
 
         main {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 75%;
@@ -67,6 +67,7 @@
             color: #ffe80a;
             text-shadow: 0px 0px 2px #ffe80a;
         }
+
         a {
             color: #ffe80a;
             text-decoration: none;
@@ -135,8 +136,7 @@
         }
 
         .board {
-            margin: 5px;
-            margin-left: 50px;
+            margin-top: 15px;
             background-color: #252525;
             width: 300px;
             height: 300px;
@@ -146,8 +146,13 @@
             padding: 5px;
             border-radius: 2px;
         }
+
         table {
             border-spacing: inherit;
+        }
+        tr:hover {
+            background-color: #a39300;
+            cursor: pointer;
         }
         td img {
             height: 30px;
@@ -158,9 +163,11 @@
             width: 100%;
             padding: 0;
         }
+
         td img.arrow {
             height: 15px;
         }
+
         .topStrata {
             font-style: italic;
             background-color: #2b2b2b;
@@ -187,11 +194,10 @@
                 <span id="ratio"></span><br>
                 <span id="timetaken"></span>
                 <h3 id="inspirational-quote"></h3>
-                <p style="filter: opacity(50%);font-style: italic;font-size: 10px;">the timer only starts once you start inputting the stratagem</p>
             </div>
         </div>
         <div class="board">
-            <h2>fastest stratagems</h2>
+            <h2>all stratagems</h2>
             <table id="stratagem-top">
                 <tr>
                     <td><img src="stratagems/A_ARC-3 Tesla Tower.png" alt="">A_ARC-3 Tesla Tower</td>
@@ -201,7 +207,7 @@
         </div>
     </main>
     <div>
-        <a href="practice.html">practice</a>
+        <a href="index.html">home</a>
     </div>
     <script>
 
@@ -410,7 +416,7 @@
             },
             {
                 name: `SOS Beacon`,
-                inputs: ["up","down","left","up"]
+                inputs: ["up", "down", "left", "up"]
             },
             {
                 name: `Resupply`,
@@ -498,59 +504,31 @@
         ratio.innerHTML = ``
         timeContainer.innerHTML = ``
         topStratagems.innerHTML = ``
-        
-        function updateBest() {
-            topStratagems.innerHTML = ``
-            function compare(a, b) {
-                return a.time - b.time;
+
+        stratagems.forEach(stratagem => {
+            const code = document.createElement("span")
+            for (let i = 0; i < stratagem.inputs.length; i++) {
+                let direction = stratagem.inputs[i]
+                let arrow = document.createElement("img")
+                arrow.classList.add(`${direction}`)
+                arrow.classList.add('arrow')
+                arrow.src = "arrows/arrow-highlight.png"
+                arrow.style.animation = "none"
+                arrow.style.filter = "opacity(100%)"
+                code.appendChild(arrow)
             }
-            bestTimes.sort(compare)
 
-            let number = 0
-            bestTimes.forEach(element => {
-                number ++
-                /*
-                <td><img src="stratagems/A_ARC-3 Tesla Tower.png" alt="">A_ARC-3 Tesla Tower</td>
-                <td>25s</td>
-                */
+            const tr = document.createElement("tr")
+            const td = document.createElement("td")
+            td.innerHTML = `<img src="stratagems/${stratagem.name}.png" alt=""><b>${stratagem.name}</b><br><span>${code.innerHTML}</span>`
+            tr.appendChild(td)
 
-                let stratagem = null
-                stratagems.forEach(strata => {
-                    if (strata.name == element.name) {
-                        stratagem = strata
-                        return;
-                    }
-                })
+            tr.onclick = function () {
+                loadArrows(stratagem)
+            }
 
-
-                const code = document.createElement("span")
-                for (let i = 0; i < stratagem.inputs.length; i++) {
-                    let direction = stratagem.inputs[i]
-                    let arrow = document.createElement("img")
-                    arrow.classList.add(`${direction}`)
-                    arrow.classList.add('arrow')
-                    arrow.src = "arrows/arrow-highlight.png"
-                    arrow.style.animation = "none"
-                    arrow.style.filter = "opacity(100%)"
-                    code.appendChild(arrow)
-                }
-
-                const tr = document.createElement("tr")
-                const td = document.createElement("td")
-                td.innerHTML = `<img src="stratagems/${element.name}.png" alt="">${element.name}<br><span>${code.innerHTML}</span>`
-                tr.appendChild(td)
-                const td2 = document.createElement("td")
-                td2.innerHTML = `${element.time}s`
-                tr.appendChild(td2)
-
-                if (number == 1) {
-                    tr.classList.add("topStrata")
-                }
-
-                topStratagems.appendChild(tr)
-
-            })
-        }
+            topStratagems.appendChild(tr)
+        })
 
         let directions = ["up", "down", "left", "right"]
 
@@ -560,7 +538,7 @@
         let startTime
         let endTime
 
-        function loadArrows() {
+        function loadArrows(strata) {
             complete = false
 
             container.innerHTML = ``
@@ -577,8 +555,7 @@
             ratio.innerHTML = ``
             timeContainer.innerHTML = ``
 
-            let randomStratagem = stratagems[getRandomInt(0, stratagems.length - 1)]
-            console.log(randomStratagem)
+            let randomStratagem = strata
 
             for (let i = 0; i < randomStratagem.inputs.length; i++) {
 
@@ -606,7 +583,7 @@
         }
 
         complete = true
-        container.innerHTML = `press wasd/arrow keys to begin`
+        container.innerHTML = ``
         updateRatio()
         updateTime()
         firstInput = true
@@ -710,11 +687,13 @@
                         complete == false
                         firstInput = true
                         updateRatio()
-                        loadArrows()
+                        if (chosen.name) {
+                            loadArrows(chosen)
+                        }
                         return;
                     } else {
                         currentIndex = 0
-                        for (let i = 0; i < chosen.inputs.length-1;i++) {
+                        for (let i = 0; i < chosen.inputs.length - 1; i++) {
                             const arrow = document.getElementById(`arrow-${i}`)
                             arrow.src = "arrows/arrow.png"
                         }
